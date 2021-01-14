@@ -274,15 +274,32 @@
     }
     
     function detalle_fallas(id_carro,nro_carro){
-     $.get(ruta_consultas+'consulta_fallas_carros.jsp',{id_carro:id_carro,nro_carro:nro_carro},function(res){
-     if(res.tipo==1)
+          $.ajax({
+        type: "POST",
+         url: ruta_consultas+'consulta_fallas_carros.jsp',
+       data: ({id_carro:id_carro,nro_carro:nro_carro}),
+        beforeSend: function () {
+            Swal.fire({
+                title: 'CONSULTANDO FALLAS CARGADAS.!',
+                html: '<strong>ESPERE</strong>...',
+                allowOutsideClick: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                    timerInterval = setInterval(() => {
+                        Swal.getContent().querySelector('strong')
+                            .textContent = Swal.getTimerLeft()
+                    }, 1000); }
+                        });  },
+        success: function (data) {
+              
+                if(data.tipo==1)
       {
        Swal.fire
     (
             {
                 title: 'Detalle de desechos carro nro.'+nro_carro,
                 type: 'info',
-                html:  res.contenido,
+                html:  data.contenido,
                 showCancelButton: false,
                 showConfirmButton: false
             }
@@ -295,15 +312,15 @@
     (
             {
                 type: 'error',
-                html:  res.contenido ,
+                html:  data.contenido ,
                 showCancelButton: false,
                 showConfirmButton: false
             }
     ); 
       }
-     
-        
-        } );
+              
+            }   });
+    
   
     
 }

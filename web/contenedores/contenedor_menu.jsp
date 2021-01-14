@@ -186,8 +186,8 @@
                     <div class="modal-header">
                         <div id="div_cbox_op"> 
                             FINALIZAR PARADA
-                            <div id="combo_op_fin" class="form-group">                 
-                                <select  name="cbox_op_fin"   id="cbox_op" class="form-control" >
+                            <div  class="form-group">                 
+                                <select  name="combo_op_fin"   id="combo_op_fin" class="form-control" >
                                     <% ResultSet rs3 = fuente.obtenerDato("select nro_produccion,paquete from parada_produccion where linea='"+linea+"' and estado='PA'");
                                     while(rs3.next()){%>          
                                     <option value="<%=rs3.getString(1)%>"><%=rs3.getString(1)%>|| COD. BARRA: <%=rs3.getString(2)%></option><%}%>
