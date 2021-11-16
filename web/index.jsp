@@ -28,7 +28,7 @@
           </div>
       <input type="text" id="usuario" class="fadeIn second" name="usuario" placeholder="Ingrese su usuario" required="required">
       <input type="password" id="pass" class="fadeIn fourth" name="pass" placeholder="Ingrese su contraseña" required="required">
-       <button   class="btn btn-primary btn-lg  ">INGRESAR</button>
+       <br><br> <br><br><button   class="btn btn-primary btn-lg  ">INGRESAR</button>
     </form>
   </div>
    

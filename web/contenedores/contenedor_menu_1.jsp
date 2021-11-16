@@ -5,29 +5,83 @@
 <jsp:useBean id="fuente_vimar" class="clases.fuentedato" scope="page"/>
 <%@include  file="../chequearsesion.jsp" %>
     <%    
-    String linea = (String) sesionOk.getAttribute("linea");
+     String linea = (String) sesionOk.getAttribute("linea");
     Connection cn = conexion.crearConexion();
-    fuente.setConexion(cn); 
-    ResultSet rs2 = fuente.obtenerDato("select nro_produccion,paquete from parada_produccion where linea='"+linea+"' and estado='a'");
-    ResultSet rs_parada = fuente.obtenerDato("select *  from vim_motivos where  id_estado=1 and tipo=1");
-                                       %>
+    Connection cn_vimar = conexion_vimar.crearConexion();
+    // Asignar conexion al objeto manejador de datos
+    fuente.setConexion(cn);
+    fuente_vimar.setConexion(cn_vimar);
+    ResultSet rs = fuente_vimar.obtenerDato(" select distinct m.id,m.nro_carro,m.cantidad_actual, convert(char(10), v.InDate, 103) as fecha, "
+            + "ar.U_TIPOHUEVO  "
+            + "from "
+            + "GrupoMaehara.dbo.carros_asignados m with(nolock) , "
+            + "vimar.dbo.obtn v     with(nolock) "
+            + "inner join oitm ar   with(nolock) on v.itemcode=ar.itemcode "
+            + "inner join obbq b    with(nolock) on v.AbsEntry=b.SnBMDAbs and b.WhsCode='CEN002'  "
+            + "where "
+            + "m.cod_lote=v.DistNumber collate database_default and "
+            + "m.estado='A' and m.linea='"+linea+"' and m.cantidad_actual>0 "
+            + "order by 2");
+
+    %>
 <html>  
  
     <div class="alert alert-warning alert-dismissible fade show" role="alert" id="div_prod_activa" data-toggle="modal" data-target="#modal_produccion" >
     <strong><center></center></strong> 
     </div>    
   
-    <div id="div_grilla">
-        
-         <div class="spinner"  >
-  <div class="rect1"></div>
-  <div class="rect2"></div>
-  <div class="rect3"></div>
-  <div class="rect4"></div>
-  <div class="rect5"></div>
-</div>
-        
-    </div>
+     <table id="table" class="display responsive nowrap" style="width:100%">
+
+         <thead style="background-color: #ffa048; color: black;">
+                 
+                <th>
+                 Carro
+                </th>
+                <th  >
+                  Cantidad
+                </th>
+                <th >
+                  Fecha puesta
+                </th>
+                <th>
+                  Tipo
+                </th>
+                <th>Fallas</th>
+                <th>Finalizar</th>
+                </thead>
+              <tbody id="myTable">
+<%  
+    if(rs.next()){
+%> 
+      
+            <tr id="<%=rs.getString(1)%>">  
+                <td style='font-weight: bold;' onclick="detalle_fallas('<%=rs.getString(1)%>','<%=rs.getString(2)%>')"><%=rs.getString(2)%></td>
+                <td style='font-weight: bold;' onclick="detalle_fallas('<%=rs.getString(1)%>','<%=rs.getString(2)%>')"><%=rs.getString(3)%></td> 
+                <td style='font-weight: bold;' onclick="detalle_fallas('<%=rs.getString(1)%>','<%=rs.getString(2)%>')"><%=rs.getString(4)%></td>
+                <td style='font-weight: bold;' onclick="detalle_fallas('<%=rs.getString(1)%>','<%=rs.getString(2)%>')"><%=rs.getString(5)%></td>
+                <td>
+               
+                        <a  class="btn btn-success btn-icon-split"  data-toggle="modal" data-target="#cuadro1" onclick="$('#cod_carrito').val('<%=rs.getString(2)%>');$('#id_carrito').val('<%=rs.getString(1)%>');" >
+                    <span class="icon text-white-50">
+                      <i class="fas fa-info-circle"></i>
+                    </span>
+                    <span class="text">Cargar</span>
+                  </a>
+                </td>  
+                <td>
+                    <a   class="btn btn-warning btn-icon-split" onclick="finalizar_fallas('<%=rs.getString(1)%>','<%=rs.getString(2)%>');">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-exclamation-triangle"></i>
+                    </span>
+                    <span class="text">Finalizar</span>
+                  </a>
+                </td>  
+                
+                <%}%>   
+        </tr> </tbody> 
+    
+    
+    </table>     
         
        
                
@@ -100,7 +154,9 @@
                             INICIAR PARADA
                             <div id="combo" class="form-group">                 
                                 <select  name="cbox_op"   id="cbox_op" class="form-control" >
-                                    <%   while(rs2.next()){ %>        
+                                    <%  ResultSet rs2 = fuente.obtenerDato("select nro_produccion,paquete from parada_produccion where linea='"+linea+"' and estado='a'");
+                                        ResultSet rs_parada = fuente.obtenerDato("select *  from vim_motivos where  id_estado=1 and tipo=1");
+                                        while(rs2.next()){ %>        
                                     <option value="<%=rs2.getString(1)%>-<%=rs2.getString(2)%>"><%=rs2.getString(1)%>|| COD. BARRA: <%=rs2.getString(2)%></option> <%} rs2.close(); %> 
                                 </select>
                             </div>

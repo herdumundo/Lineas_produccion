@@ -19,7 +19,7 @@ public class bdconexion2
         String motorBD = "sqlserver";
         
         String usuario = "sa";
-        String bd      = "vimar";//CAMBIAR BASE DE DATOS
+        String bd      = "zz_prueba_vimar";//CAMBIAR BASE DE DATOS
         String servidor= "172.16.1.202";        
         String clave   = "Paraguay2017";
       

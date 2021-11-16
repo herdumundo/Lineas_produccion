@@ -20,7 +20,7 @@ String nombre_usu = (String) sesionOk.getAttribute("user_name");
     <link href="estilos/css/sweetalert.css" rel="stylesheet" type="text/css"/>
     <link href="estilos/css/styles_loading.css" rel="stylesheet">  
     <link href="estilos/css/sb-admin-2.css" rel="stylesheet" type="text/css"/>
-    <link href="estilos/css/dataTables.css" rel="stylesheet" type="text/css"/>
+     <link href="estilos/css/dataTables.css" rel="stylesheet" type="text/css"/>
     <link href="estilos/loading_efecto.css" rel="stylesheet" type="text/css"/>
 </head>
 
@@ -244,7 +244,7 @@ String nombre_usu = (String) sesionOk.getAttribute("user_name");
     <script src="js/sb-admin-2.min.js"></script>
     <script src="js/bootstrap4-toggle.js" type="text/javascript"></script>
     <script src="js/swetalert_net.js" type="text/javascript"></script>
-    <script src="js/traer_clases.js?v=1.1.4" type="text/javascript"></script>
+    <script src="js/traer_clases.js?v=1.1.3" type="text/javascript"></script>
  
   <!-- Custom scripts for all pages-->
  
